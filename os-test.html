@@ -4,14 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OneSignalデバッグ</title>
-<style>body{font-family:system-ui;-webkit-user-select:text} code{background:#f4f4f4;padding:.1em .3em;border-radius:4px}</style>
+
+<!-- ★ PWAとして認識させるために必須 -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#111111">
+
+<style>
+  body{font-family:system-ui;-webkit-user-select:text}
+  code{background:#f4f4f4;padding:.1em .3em;border-radius:4px}
+</style>
 
 <!-- v16 SDK を確実に読み込む（onloadフラグ） -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
         async onload="window.__osLoaded=true"></script>
 
 <script>
-const APP_ID = "14fafe99-072e-475e-a1fa-6a76d3c5c695"; // ←あなたのApp ID
+const APP_ID = "14fafe99-072e-475e-a1fa-6a76d3c5c695"; // ← あなたのApp ID
 
 function log(line){ const p=document.createElement('div'); p.textContent=line; document.getElementById('log').appendChild(p); }
 function hr(){ document.getElementById('log').appendChild(document.createElement('hr')); }
@@ -64,9 +74,9 @@ async function init(){
     document.getElementById('req').disabled = false;
   }catch(e){
     log('❌ 初期化エラー: '+ e.message);
-    log('ヒント: Site URL と実URLが完全一致しているか（末尾/大文字小文字/サブパス）を確認');
-    log('ヒント: PWAをホーム画面から開いているかを確認（上の判定が✅になる必要あり）');
-    log('ヒント: OneSignalSDKWorker.js の置き場所が /repo直下 か確認');
+    log('ヒント: Site URL と実URLが完全一致（末尾/大文字小文字/サブパス）しているか');
+    log('ヒント: ホーム画面アイコンから開いているか（上の判定が✅になる必要あり）');
+    log('ヒント: OneSignalSDKWorker.js が /repo直下 か確認');
   }
 }
 
@@ -87,7 +97,7 @@ window.addEventListener('load', init);
 </head>
 <body>
 <h1>OneSignal デバッグ</h1>
-<p>手順：このページを <b>Safariで開く→ホーム画面に追加→アイコンから開く</b>。</p>
+<p>手順：このページを <b>Safariで開く → 共有 → ホーム画面に追加</b>し、<b>アイコンから開く</b>。</p>
 <p><button id="req" onclick="requestPerm()" disabled>🔔 通知許可をリクエスト</button></p>
 <pre id="log" style="white-space:pre-wrap"></pre>
 </body>
