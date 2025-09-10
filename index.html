@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111"/>
+  <title>Wplace アカウント管理 & 通知</title>
+</head>
+<body>
+  <h1>Wplace アカウント管理</h1>
+  <form id="accountForm">
+    <label>メール: <input required name="email" type="email"></label><br>
+    <label>アカウント名: <input required name="name" type="text"></label><br>
+    <label>Level(例: Level2 (14%)): <input name="level" type="text"></label><br>
+    <label>Droplets: <input required name="droplets" type="number" min="0"></label><br>
+    <label>Paint上限(cap): <input required name="cap" type="number" min="1"></label><br>
+    <label>現在Paint(cur): <input required name="cur" type="number" min="0" step="1"></label><br><br>
+
+    <fieldset>
+      <legend>通知設定（このアカウント）</legend>
+      <label><input type="checkbox" name="notif_full"> 全回復時</label><br>
+      <label>全回復○分前: <input name="notif_full_minutes_before" type="number" min="1" placeholder="例: 10"></label><br>
+      <label>全回復○%前: <input name="notif_full_percent_before" type="number" min="1" max="99" placeholder="例: 10"></label><br>
+      <label>指定Paintに到達: <input name="notif_target_paint" type="number" min="0" placeholder="例: 1000"></label><br>
+    </fieldset>
+    <button type="submit">登録/更新</button>
+  </form>
+
+  <hr>
+  <h2>登録済みアカウント</h2>
+  <ul id="list"></ul>
+
+  <script src="app.js"></script>
+
+  <!-- OneSignal 初期化（自分のApp IDに置換） -->
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "YOUR-ONESIGNAL-APP-ID",
+        notifyButton: { enable: false }
+      });
+    });
+  </script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" async></script>
+</body>
+</html>
