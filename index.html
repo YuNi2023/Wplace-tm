@@ -8,20 +8,41 @@
   <meta name="theme-color" content="#111111"/>
   <title>Wplace アカウント管理 & 通知</title>
 
-  <!-- ✅ OneSignalの埋め込みコード -->
+  <!-- OneSignal SDK -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
-        appId: "14fafe99-072e-475e-a1fa-6a76d3c5c695", // ← あなたのApp ID
-        notifyButton: { enable: false } // 通知ボタンは非表示（任意）
+        appId: "14fafe99-072e-475e-a1fa-6a76d3c5c695",
+        notifyButton: { enable: false }
       });
+      // 現在の権限を表示（デバッグ用）
+      const perm = await OneSignal.Notifications.permission;
+      console.log("permission:", perm); // default|granted|denied
     });
+
+    // クリックで通知許可を要求（iOSはユーザー操作必須が確実）
+    async function requestPushPermission() {
+      try {
+        const OneSignal = window.OneSignal;
+        if (!OneSignal) return alert("OneSignalの初期化待ちです。数秒後に再試行してください。");
+        // iOSでも有効な公式API
+        const granted = await OneSignal.Notifications.requestPermission();
+        alert(granted ? "通知が許可されました！" : "通知は許可されませんでした。");
+      } catch (e) {
+        console.error(e);
+        alert("通知許可のリクエストでエラーが発生しました。");
+      }
+    }
   </script>
 </head>
 <body>
   <h1>Wplace アカウント管理</h1>
+
+  <!-- ← これをタップして許可を出す -->
+  <p><button onclick="requestPushPermission()">🔔 通知を有効化</button></p>
+
   <form id="accountForm">
     <label>メール: <input required name="email" type="email"></label><br>
     <label>アカウント名: <input required name="name" type="text"></label><br>
@@ -44,7 +65,6 @@
   <h2>登録済みアカウント</h2>
   <ul id="list"></ul>
 
-  <!-- メインロジック -->
   <script src="app.js"></script>
 </body>
 </html>
