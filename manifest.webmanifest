@@ -1,7 +1,7 @@
 {
   "name": "Wplace 管理・通知",
   "short_name": "Wplace通知",
-  "start_url": ".",
+  "start_url": "./",          // ← これ重要（/Wplace-tm/配下をスコープに）
   "display": "standalone",
   "background_color": "#111111",
   "theme_color": "#111111",
